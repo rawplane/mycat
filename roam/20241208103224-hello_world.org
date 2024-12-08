@@ -1,6 +1,0 @@
-:PROPERTIES:
-:ID:       29908843-e283-41ba-aabb-a44458206200
-:END:
-#+title: hello world
-
-ini file pertama saya

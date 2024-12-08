@@ -5,4 +5,5 @@
 
 r
 * Rewards
-** TODO beli buku snbt king tanggal 12
+** TODO Beli Buku snbt king:
+SCHEDULED: <2024-12-12 Thu>

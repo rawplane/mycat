@@ -1,0 +1,13 @@
+:PROPERTIES:
+:ID:       6e4cac4e-7d30-49f9-9daf-d890f19b3cac
+:END:
+#+title: Organize my life
+
+* Environment Organize
+Ini adalah environment kegiatan - kegiatan saya, dan untuk to do list
+yang menggunakan notifikasi yang biasanya menggunakan kan google kalender.
+Saya harap org file saya dapat membantu saya untuk mengembankan diri saya, menjadi lebih baik
+
+[[id:bbad838b-d27b-46f6-9207-46f3d654026f][Reward  Tracker]]
+[[id:63f708d8-223e-41aa-9f53-254793059be3][Jadwal Pelajaran]]
+[[id:702fd85c-d221-431a-9c53-45e1022dca41][Assignment Tracker]]
