@@ -3,4 +3,4 @@
 :END:
 #+title: hello world
 
-* ini file pertama saya
+ini file pertama saya
