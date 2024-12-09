@@ -22,7 +22,7 @@
    - Deskripsi: [[Ini tugas gatau kan selesai]]
    - Status: [[Dalam Proses]].
 
-** TODO Part 1 "Some notes"
+** TODO Part 1 "Exercise 1.1 1.2"
    DEADLINE: <2024-12-18 Wed>
    :PROPERTIES:
    :Subject: Course
@@ -39,4 +39,3 @@
    :END:
    - Deskripsi: [[Tulis detail tugas di sini.]]
    - Status: [[Dalam proses]].
-
