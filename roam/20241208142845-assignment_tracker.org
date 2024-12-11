@@ -13,7 +13,7 @@
    - Pending: [[elisp:(org-tags-view nil "TODO")]]
 
 * Assignments
-** TODO Hafalkan teks ceramh
+** DONE Hafalkan teks ceramh
    DEADLINE: <2024-12-18 Wed>
    :PROPERTIES:
    :Subject: Agama
