@@ -3,7 +3,7 @@
 :END:
 #+title: reward tracker
 
-r
+
 * Rewards
 ** TODO Beli Buku snbt king:
 SCHEDULED: <2024-12-12 Thu>
