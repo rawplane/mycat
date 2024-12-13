@@ -1,0 +1,55 @@
+:PROPERTIES:
+:ID:       a75612f0-6248-48f4-aab6-fcb41e6286f2
+:END:
+#+title: Snbt
+
+* Snbt
+SNBT adalah singkatan dari *Seleksi Nasional Berdasarkan Tes*, sebuah mekanisme seleksi masuk perguruan tinggi negeri di Indonesia. SNBT menggantikan SBMPTN (Seleksi Bersama Masuk Perguruan Tinggi Negeri) mulai tahun 2023. Proses seleksi ini dilakukan berdasarkan hasil tes yang diikuti oleh calon mahasiswa melalui platform UTBK (Ujian Tulis Berbasis Komputer).
+
+Ciri utama SNBT:
+
+1. Berbasis Tes: Penilaian dilakukan berdasarkan hasil tes, seperti Tes Potensi Skolastik (TPS) dan tes berbasis literasi.
+
+
+2. Pengelolaan Pusat: Dikelola oleh Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi (Kemendikbudristek).
+
+
+3. Fokus Literasi: Menekankan literasi, numerasi, dan penalaran yang lebih umum dibandingkan dengan tes berbasis bidang studi seperti pada SBMPTN.
+
+
+
+SNBT bertujuan untuk menciptakan sistem seleksi yang lebih inklusif dan adil bagi semua calon mahasiswa.
+
+* Subtes snbt
+Pada SNBT (Seleksi Nasional Berdasarkan Tes), terdapat empat subtes utama yang diujikan. Berikut adalah subtes-subtes tersebut:
+
+1. Tes Potensi Skolastik (TPS):
+Mengukur kemampuan kognitif umum, seperti:
+
+- Penalaran umum
+
+- Pemahaman kuantitatif
+
+- Pengetahuan dan pemahaman umum
+
+- Pemahaman bacaan dan tulisan
+
+
+
+2. Literasi dalam Bahasa Indonesia:
+Mengukur kemampuan membaca dan memahami teks berbahasa Indonesia serta menganalisis informasi dalam konteks akademik.
+
+
+3. Literasi dalam Bahasa Inggris:
+Menguji kemampuan memahami teks berbahasa Inggris, termasuk analisis isi dan konteks.
+
+
+4. Penalaran Matematika:
+Mengukur kemampuan menganalisis dan menyelesaikan masalah menggunakan konsep matematika dasar.
+
+
+
+Catatan Penting:
+Tidak ada lagi tes berbasis bidang studi seperti pada SBMPTN. Fokus SNBT adalah pada literasi, penalaran, dan kemampuan kognitif umum.
+
+[[id:aa01562e-bfd0-4a8a-b3da-e6889b288337][Goals]]
