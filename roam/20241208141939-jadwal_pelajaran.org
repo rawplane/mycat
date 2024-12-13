@@ -5,10 +5,10 @@
 
 * Jadwal Pelajaran
 ** Senin
-   - 19:00-20:30 | Softskills
+   - 19:00-20:30 | SNBT
 
 ** Selasa
-   - 19:00-20:30 | Softskills
+   - 19:00-20:30 | SNBT
 
 ** Rabu
    - 19:00-20:30 | English
