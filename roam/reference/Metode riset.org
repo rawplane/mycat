@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       90816a8b-5015-4cf4-a1e9-3d81026d723b
+:END:
+#+title: Metode riset
+
+Hello world
+
+[[id:eb96813d-1976-4197-b4b0-c706135da38f][Catatan]]
