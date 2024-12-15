@@ -99,5 +99,11 @@ B. PURPOSE OFTHETEXT288:
 - PARAPHRACING AND SUMARIZING:
 - ORGANITATION IDEAS:
 
+* Progress Tracker Tryout
+| Tryout ke | Platform         | Total Jawaban Benar | Penalaran Umum | PK | PPU | PBM | LBI | LBE | PM |
+|-----------+------------------+---------------------+----------------+----+-----+-----+-----+-----+----|
+| 1         | Platform A       | 15                  | Ragu-ragu      | Paham | Paham | Ragu-ragu | Belum Paham | Ragu-ragu | Paham |
+| 2         | Platform B       | 20                  | Paham          | Belum Paham | Paham | Ragu-ragu | Belum Paham | Ragu-ragu | Paham |
+
 [[id:a75612f0-6248-48f4-aab6-fcb41e6286f2][SNBT]]
 [[id:aa01562e-bfd0-4a8a-b3da-e6889b288337][Goals]]
