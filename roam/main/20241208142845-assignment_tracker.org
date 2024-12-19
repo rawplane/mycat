@@ -39,3 +39,12 @@
    :END:
    - Deskripsi: [[Tulis detail tugas di sini.]]
    - Status: [[Dalam proses]].
+
+** TODO Odin Project installation overview
+   DEADLINE: <2024-12-20 We>
+   :PROPERTIES:
+   :Subject: Programming
+   :Priority: A
+   :END:
+   - Deskripsi: [[Tulis detail tugas di sini.]]
+   - Status: [[Dalam proses]].
