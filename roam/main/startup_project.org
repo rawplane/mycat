@@ -1,0 +1,8 @@
+:PROPERTIES:
+:ID:       84416b4a-9c6e-4d3f-ba55-66bafe19670e
+:END:
+#+title: Startup Project
+
+Pada kali saya ingin berkomitmen untuk membuat startup saya, yaitu membuat sebuah produk digital dan blog, saya yakin dengan dua komponen ini saya pasti bisa membangun startup yang sukses
+
+[[id:102ded9b-b62e-436b-acb6-4678aa271d54][Financial Projects]]
