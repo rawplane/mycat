@@ -5,7 +5,7 @@
 
 * Environment Organize
 Ini adalah environment kegiatan - kegiatan saya, dan untuk to do list
-yang menggunakan notifikasi yang biasanya menggunakan kan google kalender.
+yang menggunakan notifikasi yang biasanya menggunakan kan google kalender. Dan ini sangat membantu saya dalam membuat sebuah goals menjadi lebih efektif.
 Saya harap org file saya dapat membantu saya untuk mengembankan diri saya, menjadi lebih baik
 
 [[id:bbad838b-d27b-46f6-9207-46f3d654026f][Reward  Tracker]]
