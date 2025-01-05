@@ -3,6 +3,6 @@
 :END:
 #+title: Startup Project
 
-Pada kali saya ingin berkomitmen untuk membuat startup saya, yaitu membuat sebuah produk digital dan blog, saya yakin dengan dua komponen ini saya pasti bisa membangun startup yang sukses
+Pada kali saya ingin berkomitmen untuk membuat startup saya, yaitu membuat sebuah produk digital dan blog, saya yakin dengan dua komponen ini saya pasti bisa membangun startup yang sukses, untuk memanajemen project saya menggunakan linear.
 
 [[id:102ded9b-b62e-436b-acb6-4678aa271d54][Financial Projects]]
