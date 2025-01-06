@@ -1,9 +1,0 @@
-:PROPERTIES:
-:ID:       bbad838b-d27b-46f6-9207-46f3d654026f
-:END:
-#+title: reward tracker
-
-
-* Rewards
-** TODO Beli Buku snbt king:
-SCHEDULED: <2024-12-12 Thu>
