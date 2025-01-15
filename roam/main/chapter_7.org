@@ -3,15 +3,13 @@
 :END:
 #+title: Chapter-7
 
-
 * Refleksi Harian
 ** Momen Bermakna Hari Ini
-- Jangan terlalu memaksa diri
+- Mendapatkan sebuah insight dari realita
 
 ** Tantangan yang Dihadapi
 - Menghargai waktu
 - Konsisten meditasi
-- Mengatur kelompok pkl
 
 ** Emosi dan Perasaan
  - Senang
@@ -19,9 +17,8 @@
 
 ** Hal yang Dipelajari
  - Displin
- - Komunikasi yang baik
- - Percaya diri
- - Merefleksikan diri
+ - Sabar
+ - Belajar dari kegagalan
 
 ** Hal yang Disyukuri
  - Hidup berkecupan
@@ -31,7 +28,7 @@
  - Usahakan buat jadwal yang efektif
 
 * Catatan
-Hari ini memanga saya butuh istirahat.
+Tetap semangat mencari ilmu dan berkembang
 
 [[id:2453ae63-e2e0-4101-bee6-aaa22c752fb1][Self Development
 ]]
