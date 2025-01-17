@@ -1,0 +1,12 @@
+:PROPERTIES:
+:ID:       f2da32a1-c3fa-4731-a5b2-7df8ee545b46
+:END:
+#+title: Mini Goals
+
+* Ini adalah goals yang harus dicapai pada minggu ini
+** Meditasi
+** Bangun jam 04:30
+** Tidur jam 21:30
+** Dopamine Detox
+
+[[id:2453ae63-e2e0-4101-bee6-aaa22c752fb1][Self Development]]

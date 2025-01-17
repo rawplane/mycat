@@ -3,4 +3,9 @@
 :END:
 #+title: Financial literacy
 
-Ini adalah referensi catatan untuk mempelajari financial saya
+* Ini adalah referensi catatan untuk mempelajari financial saya
+Saya disini memcoba memulai belajar cara investasi dengan baik dengan tujuan menstabilkan ekonomi saya.
+
+* Financial Reference
+- Pluang Academy
+- Online source
