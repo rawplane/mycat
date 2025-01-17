@@ -1,0 +1,6 @@
+:PROPERTIES:
+:ID:       afe8eef6-3f58-4c6d-82ce-a20b14ca31b0
+:END:
+#+title: Financial literacy
+
+Ini adalah referensi catatan untuk mempelajari financial saya
