@@ -1,9 +1,0 @@
-:PROPERTIES:
-:ID:       6cec3727-86e8-4104-93a7-73f35c0c33ac
-:END:
-#+title: Odin Project Reference
-
-* Introduction
-[[https://www.theodinproject.com/contributing][Contributing on the odin projects]]
-[[https://pomofocus.io/][Pomofocus
-]]TypeFaster: typing.com, typingclub.com, monkeytype
