@@ -4,4 +4,4 @@
 #+title: Self Development
 
 * Catatan Berbasis org file
-catatan ini adalah catatan jurnal untuk refleksi diri saya, yang dimana di sebuag file bernama main itu adalah main chracter atau saya mcnya itu saya sendiri. Dan semoga ini dapat memperbaiki hidup saya yang sudah mulai saya jalani dengan baik!
+Ini adalah semua catatan self development saya yang dimana ini akan mengorganisir kegiatan saya. Dan semoga saya disipln melakukan ini semua.
