@@ -1,0 +1,10 @@
+:PROPERTIES:
+:ID:       ca5b3cfa-7119-4185-bcb9-b117d98183d4
+:END:
+#+title: Fokus ke tujuan
+
+* Membuat tujuan
+Saya sekarang sudah punya tujuan yaitu tetap belajar programming dan membuat semua teroganisir.
+
+* Fokus ke sistem
+Setelah saya membuat goals saya, di sini saya juga harus membuat sistem untuk menggapai goals tersebut dan lakukan secara konsisten agar hasilnya maksimal.
