@@ -26,14 +26,10 @@ Pick whichever is easiest — the cat runs on **Windows, macOS and Linux**.
 
 ### Option A — prebuilt binary (no Python needed)
 
-Download the build for your OS from the **[latest release](https://github.com/rawplane/mycat/releases/latest)**, then run it:
-
 | OS | File | How to run |
 | --- | --- | --- |
 | **Windows** | `mycat-<version>-windows-x64.exe` | double-click it |
 | **macOS** | `mycat-<version>-macos-arm64.zip` | unzip, then open `mycat.app` |
-
-> Builds for every release live on the **[Releases](https://github.com/rawplane/mycat/releases)** page.
 
 ### Option B — pip (Windows / macOS / Linux, Python ≥ 3.10)
 
