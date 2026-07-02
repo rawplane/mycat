@@ -1,8 +1,7 @@
-EN | [RU](https://github.com/yumiaura/myCat/blob/main/docs/README_RU.md) | [CN](https://github.com/yumiaura/myCat/blob/main/docs/README_CN.md) | [ID](https://github.com/yumiaura/myCat/blob/main/docs/README_ID.md)
 
 ## Desktop Cat: QT Overlay 🐱
 
-[<img src="https://raw.githubusercontent.com/yumiaura/yumiaura/refs/heads/main/images/cat.gif" width="164" alt="cat.gif"/>](https://github.com/yumiaura)
+[<img src="https://raw.githubusercontent.com/yumiaura/yumiaura/refs/heads/main/images/cat.gif" width="164" alt="cat.gif"/>](https://github.com/rawplane)
 
 <p class="badges">
   <img src="https://img.shields.io/pypi/pyversions/mycat?color=brightgreen" alt="Python Versions">
@@ -12,8 +11,7 @@ EN | [RU](https://github.com/yumiaura/myCat/blob/main/docs/README_RU.md) | [CN](
 
 I made a cute little animated cat 🐈 for your desktop.<br>
 It's a lightweight Python + Qt app — no borders, and you can drag it around easily.<br>
-Shows static first frame for 5 seconds, then plays GIF animation once, then loops back to static.<br>
-If you like it, maybe I'll share an [AnimeGirl](https://github.com/yumiaura/mycat/discussions/1) version next time~ 😉<br>
+Shows static first frame for 5 seconds, then plays GIF animation once, then loops back to static.<br>s
 
 <img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/5bc3c45b-83ef-4fcb-8977-781eaf7b045b" />
 
@@ -28,14 +26,14 @@ Pick whichever is easiest — the cat runs on **Windows, macOS and Linux**.
 
 ### Option A — prebuilt binary (no Python needed)
 
-Download the build for your OS from the **[latest release](https://github.com/yumiaura/myCat/releases/latest)**, then run it:
+Download the build for your OS from the **[latest release](https://github.com/rawplane/mycat/releases/latest)**, then run it:
 
 | OS | File | How to run |
 | --- | --- | --- |
 | **Windows** | `mycat-<version>-windows-x64.exe` | double-click it |
 | **macOS** | `mycat-<version>-macos-arm64.zip` | unzip, then open `mycat.app` |
 
-> Builds for every release live on the **[Releases](https://github.com/yumiaura/myCat/releases)** page.
+> Builds for every release live on the **[Releases](https://github.com/rawplane/mycat/releases)** page.
 
 ### Option B — pip (Windows / macOS / Linux, Python ≥ 3.10)
 
@@ -164,10 +162,5 @@ docker compose -f docker-compose.mac.yml up
 **Permission errors** 🔒
 - On Linux prefer a user install over `sudo` (`pip install --user mycat`).
 
-### 🤝 Getting help
 
-- Search the [GitHub Issues](https://github.com/yumiaura/myCat/issues) for similar problems.
-- Read [CONTRIBUTING.md](CONTRIBUTING.md) for development setup.
-- Open a new issue with your OS, desktop environment, Python version and any terminal errors.
-s
 Thank you for reading to the end! 😸🐾
