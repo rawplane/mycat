@@ -1,7 +1,0 @@
-:PROPERTIES:
-:ID:       2453ae63-e2e0-4101-bee6-aaa22c752fb1
-:END:
-#+title: Self Development
-
-* Catatan Berbasis org file
-Ini adalah semua catatan self development saya yang dimana ini akan mengorganisir kegiatan saya. Dan semoga saya disipln melakukan ini semua.

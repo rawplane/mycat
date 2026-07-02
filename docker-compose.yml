@@ -1,0 +1,20 @@
+services:
+  mycat:
+    build:
+      context: .
+    image: mycat:local
+    container_name: mycat-app
+    pull_policy: never
+    env_file:
+      - .env
+    
+    environment:
+      - QT_QPA_PLATFORM=xcb
+      - DISPLAY=${DISPLAY:-:0}
+
+    volumes:
+      - ./mycat:/app/mycat
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+    network_mode: host
+    restart: "no"
