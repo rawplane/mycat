@@ -49,7 +49,7 @@ Upgrade or remove later with `pip install -U mycat` / `pip uninstall mycat`.
 ### Option C — from source
 
 ```bash
-git clone https://github.com/rawplane/mycsat
+git clone https://github.com/rawplane/mycat
 cd myCat
 pip install .
 mycat                 # or, without installing:  python3 mycat/main.py
