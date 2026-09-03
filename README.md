@@ -10,14 +10,7 @@
 
 I made a cute little animated cat 🐈 for your desktop.<br>
 It's a lightweight Python + Qt app — no borders, and you can drag it around easily.<br>
-Shows static first frame for 5 seconds, then plays GIF animation once, then loops back to static.<br>s
-
-<img width="1440" height="900" alt="image" src="https://github.com/user-attachments/assets/5bc3c45b-83ef-4fcb-8977-781eaf7b045b" />
-
-<img width="395" height="255" alt="image" src="https://github.com/user-attachments/assets/f2eefbc5-f6be-47c8-8ff1-d957c0ab6ed1" />
-
-<img width="395" height="395" alt="image" src="https://github.com/user-attachments/assets/41851fd0-8738-490b-a31f-850b47772402" />
-
+Shows static first frame for 5 seconds, then plays GIF animation once, then loops back to static.<br>
 
 ## 🚀 Quick start
 
