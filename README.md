@@ -5,7 +5,6 @@
 
 <p class="badges">
   <img src="https://img.shields.io/pypi/pyversions/mycat?color=brightgreen" alt="Python Versions">
-  <a href="https://pypi.org/project/mycat/"><img src="https://img.shields.io/pypi/v/mycat?color=brightgreen" alt="PyPI Version"></a>
   <a href="https://pypi.org/project/mycat/"><img src="https://img.shields.io/pepy/dt/mycat?label=pypi%20%7C%20downloads&color=brightgreen" alt="Pepy Total Downloads"/></a>
 </p>
 
