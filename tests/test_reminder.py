@@ -47,3 +47,11 @@ def test_available_planes_lists_bundled_sprites():
     assert reminder_ui.plane_sprite_path("plane2").name == "plane2.png"
     # Unknown name falls back to the bundled single sprite.
     assert reminder_ui.plane_sprite_path("nope").name == "plane.png"
+
+
+def test_single_config_source():
+    import mycat.app_config as c
+    import mycat.main as m, mycat.reminder as r, mycat.llm_prompt as p
+    assert str(m.CFG_FILE) == str(c.CFG_FILE)
+    assert str(r.CFG_FILE) == str(c.CFG_FILE)
+    assert str(p.CFG_FILE) == str(c.CFG_FILE)

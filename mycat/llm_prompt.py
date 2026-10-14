@@ -12,13 +12,10 @@ from datetime import datetime
 from pathlib import Path
 
 from . import secret_store
+from .app_config import APP_NAME, CFG_DIR, CFG_FILE, HISTORY_FILE
 
 logger = logging.getLogger(__name__)
 
-APP_NAME = "mycat"
-CFG_DIR = Path.home() / ".config" / APP_NAME
-CFG_FILE = CFG_DIR / "config.ini"
-HISTORY_FILE = CFG_DIR / "history.txt"
 PROMPT_TEMPLATE_PATH = Path(__file__).resolve().parent / "PROMPT.j2"
 _LEGACY_PROMPT_TEMPLATE_PATH = Path(__file__).resolve().parent / "PROMT.j2"
 HISTORY_MAX_BYTES = 1_000_000

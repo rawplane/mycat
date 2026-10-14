@@ -17,18 +17,13 @@ import configparser
 import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from pathlib import Path
 
 from PySide6 import QtCore
 
 from . import secret_store
+from .app_config import CFG_DIR, CFG_FILE
 
 logger = logging.getLogger(__name__)
-
-# Same config file the rest of the app uses (see main.py). Derived locally to
-# avoid importing main and creating an import cycle.
-CFG_DIR = Path.home() / ".config" / "mycat"
-CFG_FILE = CFG_DIR / "config.ini"
 
 DIRECTION_LTR = "ltr"  # plane flies left -> right, banner trailing on the left
 DIRECTION_RTL = "rtl"  # plane flies right -> left, banner trailing on the right
