@@ -48,6 +48,7 @@ if __package__:
         x11_compositor_active,
         x11_screen_size,
     )
+    from .tray import make_app_icon, setup_tray
 else:
     import importlib
     repo_root = Path(__file__).resolve().parent.parent
@@ -82,6 +83,9 @@ else:
     usable_screen_rect = display.usable_screen_rect
     x11_compositor_active = display.x11_compositor_active
     x11_screen_size = display.x11_screen_size
+    tray = importlib.import_module("mycat.tray")
+    make_app_icon = tray.make_app_icon
+    setup_tray = tray.setup_tray
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
@@ -710,60 +714,6 @@ def parse_args() -> argparse.Namespace:
     )
     llm.add_arguments(parser)
     return parser.parse_args()
-
-
-def make_app_icon() -> QtGui.QIcon:
-    """A 😽 cat icon, used for the tray, the app icon and the splash."""
-    pixmap = QtGui.QPixmap(64, 64)
-    pixmap.fill(QtCore.Qt.GlobalColor.transparent)
-    painter = QtGui.QPainter(pixmap)
-    painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
-    font = QtGui.QFont()
-    font.setPointSize(40)
-    painter.setFont(font)
-    painter.drawText(pixmap.rect(), QtCore.Qt.AlignmentFlag.AlignCenter, "😽")
-    painter.end()
-    return QtGui.QIcon(pixmap)
-
-
-def setup_tray(app, window, icon_pixmap):
-    """A persistent cat icon in the system tray with a quick-action menu.
-
-    Returns the tray icon (kept alive by the caller), or None when no system
-    tray is available.
-    """
-    if not QtWidgets.QSystemTrayIcon.isSystemTrayAvailable():
-        return None
-    icon = QtGui.QIcon(icon_pixmap) if icon_pixmap and not icon_pixmap.isNull() else make_app_icon()
-    tray = QtWidgets.QSystemTrayIcon(icon, app)
-    tray.setToolTip("mycat 🐱")
-
-    menu = QtWidgets.QMenu(window)
-    toggle_chat = getattr(window, "_toggle_llm_chat", None)
-    if callable(toggle_chat):
-        menu.addAction("Chat", toggle_chat)
-    menu.addAction("Reminder…", window._open_reminder)
-    menu.addAction("LLM…", window.open_llm_settings)
-    if autostart.is_supported():
-        menu.addSeparator()
-        login_action = menu.addAction("Autostart")
-        login_action.setCheckable(True)
-        login_action.setChecked(autostart.is_enabled())
-        login_action.toggled.connect(autostart.set_enabled)
-    menu.addSeparator()
-    menu.addAction("Settings…", window._open_settings)
-    menu.addAction("Reset Position", window._reset_position)
-    menu.addAction("Quit", QtWidgets.QApplication.quit)
-    tray.setContextMenu(menu)
-
-    def on_activated(reason):
-        if reason == QtWidgets.QSystemTrayIcon.ActivationReason.DoubleClick:
-            window.show()
-            window.raise_()
-
-    tray.activated.connect(on_activated)
-    tray.show()
-    return tray
 
 
 def main() -> None:
