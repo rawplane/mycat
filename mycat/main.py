@@ -10,7 +10,6 @@ pip install PySide6
 """
 
 import argparse
-import configparser
 import logging
 import os
 import shutil
@@ -24,7 +23,19 @@ from pathlib import Path
 # Allow running both as `python -m mycat` and `python mycat/main.py`
 if __package__:
     from . import autostart, llm, reminder, secret_store, skin_catalog
-    from .app_config import CFG_DIR, CFG_FILE
+    from .app_config import (
+        CFG_DIR,
+        CFG_FILE,
+        DEFAULT_POSITION_OFFSET_X,
+        DEFAULT_POSITION_OFFSET_Y,
+        load_config,
+        load_image_from_ini,
+        load_wait_time_from_ini,
+        read_config,
+        save_config,
+        save_image_to_ini,
+        secure_write_config,
+    )
     from .cat_image import (
         get_gif_duration,
         load_packaged_images,
@@ -45,6 +56,15 @@ else:
     app_config = importlib.import_module("mycat.app_config")
     CFG_DIR = app_config.CFG_DIR
     CFG_FILE = app_config.CFG_FILE
+    DEFAULT_POSITION_OFFSET_X = app_config.DEFAULT_POSITION_OFFSET_X
+    DEFAULT_POSITION_OFFSET_Y = app_config.DEFAULT_POSITION_OFFSET_Y
+    load_config = app_config.load_config
+    load_image_from_ini = app_config.load_image_from_ini
+    load_wait_time_from_ini = app_config.load_wait_time_from_ini
+    read_config = app_config.read_config
+    save_config = app_config.save_config
+    save_image_to_ini = app_config.save_image_to_ini
+    secure_write_config = app_config.secure_write_config
     cat_image = importlib.import_module("mycat.cat_image")
     get_gif_duration = cat_image.get_gif_duration
     load_packaged_images = cat_image.load_packaged_images
@@ -80,136 +100,12 @@ IMAGE_HEIGHT_MAX = 500  # Maximum height for images in pixels (images will be sc
 STATIC_TIME = 5.0  # Seconds to show static first frame before playing GIF
 
 # Window position settings
-DEFAULT_POSITION_OFFSET_X = 10  # Offset from right edge of screen
-DEFAULT_POSITION_OFFSET_Y = 10  # Offset from bottom edge of screen
+# (DEFAULT_POSITION_OFFSET_X and DEFAULT_POSITION_OFFSET_Y imported from app_config)
 
 
 def scan_images_directory() -> list[str]:
     """Return sorted unique skin ids from bundled + user-installed locations."""
     return skin_catalog.scan_all()
-
-
-def load_config(screen_width: int, screen_height: int, window_width: int, window_height: int) -> dict:
-    """Load configuration from INI file. Returns position for bottom-right corner."""
-    # Calculate default position (bottom-right with offset)
-    default_x = screen_width - window_width - DEFAULT_POSITION_OFFSET_X
-    default_y = screen_height - window_height - DEFAULT_POSITION_OFFSET_Y
-    config_data = {'x': default_x, 'y': default_y}
-    
-    if not CFG_FILE.exists():
-        return config_data
-    
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        
-        if 'window' in config:
-            if 'x' in config['window']:
-                config_data['x'] = int(config['window']['x'])
-            if 'y' in config['window']:
-                config_data['y'] = int(config['window']['y'])
-    except Exception as e:
-        logger.error(f"Config load error: {e}")
-    
-    return config_data
-
-
-def save_config(config: dict) -> None:
-    """Save configuration to INI file."""
-    try:
-        CFG_DIR.mkdir(parents=True, exist_ok=True)
-        
-        # Read existing config if it exists
-        file_config = configparser.ConfigParser()
-        if CFG_FILE.exists():
-            file_config.read(CFG_FILE)
-        
-        # Ensure [window] section exists
-        if 'window' not in file_config:
-            file_config.add_section('window')
-        
-        # Update window position if provided
-        if 'x' in config:
-            file_config['window']['x'] = str(config['x'])
-        if 'y' in config:
-            file_config['window']['y'] = str(config['y'])
-        
-        # Write to file
-        with open(CFG_FILE, 'w') as f:
-            file_config.write(f)
-        secret_store.secure_file(CFG_FILE)
-    except Exception as e:
-        logger.error(f"Config save error: {e}")
-
-
-def load_image_from_ini() -> str | None:
-    """Load default image setting from INI file."""
-    if not CFG_FILE.exists():
-        logger.info("INI config not found, using default: cat")
-        return None
-    
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        
-        if 'settings' in config and 'default_image' in config['settings']:
-            image_name = config['settings']['default_image']
-            logger.info(f"Loaded image from INI: {image_name}")
-            return image_name
-        else:
-            logger.info("INI config exists but no default_image setting found, using default: cat")
-            return None
-    except Exception as e:
-        logger.error(f"Error reading INI file: {e}, using default: cat")
-        return None
-
-
-def load_wait_time_from_ini(default_wait: float) -> float:
-    """Load wait_time setting from INI file."""
-    if not CFG_FILE.exists():
-        return default_wait
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        if 'settings' in config and 'wait_time' in config['settings']:
-            return float(config['settings']['wait_time'])
-    except Exception as e:
-        logger.error(f"Error reading wait_time from INI: {e}")
-    return default_wait
-
-
-def save_image_to_ini(image_name: str) -> None:
-    """Save current image setting to INI file (skips writing if value is unchanged)."""
-    try:
-        CFG_DIR.mkdir(parents=True, exist_ok=True)
-
-        config = configparser.ConfigParser()
-
-        # Read existing config if it exists
-        if CFG_FILE.exists():
-            config.read(CFG_FILE)
-
-        if (
-            config.has_section('settings')
-            and config.get('settings', 'default_image', fallback=None) == image_name
-        ):
-            return
-
-        # Ensure [settings] section exists
-        if 'settings' not in config:
-            config.add_section('settings')
-
-        # Set the default_image value
-        config['settings']['default_image'] = image_name
-
-        # Write to file
-        with open(CFG_FILE, 'w') as f:
-            config.write(f)
-        secret_store.secure_file(CFG_FILE)
-
-        logger.info(f"Saved image setting to INI: {image_name}")
-    except Exception as e:
-        logger.error(f"Error saving to INI file: {e}")
 
 
 class PixelCatWindow(QtWidgets.QWidget):
