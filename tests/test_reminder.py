@@ -51,7 +51,10 @@ def test_available_planes_lists_bundled_sprites():
 
 def test_single_config_source():
     import mycat.app_config as c
-    import mycat.main as m, mycat.reminder as r, mycat.llm_prompt as p
+    import mycat.llm_prompt as p
+    import mycat.main as m
+    import mycat.reminder as r
+
     assert str(m.CFG_FILE) == str(c.CFG_FILE)
     assert str(r.CFG_FILE) == str(c.CFG_FILE)
     assert str(p.CFG_FILE) == str(c.CFG_FILE)
