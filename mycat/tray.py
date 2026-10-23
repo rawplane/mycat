@@ -2,10 +2,7 @@
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-try:
-    from . import autostart
-except ImportError:
-    import autostart
+from . import autostart
 
 __all__ = ["make_app_icon", "setup_tray"]
 

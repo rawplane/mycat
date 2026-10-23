@@ -815,11 +815,7 @@ def main() -> None:
         # Persistent cat tray icon (kept on the window so it isn't GC'd).
         window.tray_icon = setup_tray(app, window, png_pixmap)
 
-    try:
-        sys.exit(app.exec())
-    except KeyboardInterrupt:
-        logger.info("\nShutdown requested by user")
-        sys.exit(0)
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

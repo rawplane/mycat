@@ -7,6 +7,21 @@ from PySide6 import QtGui, QtWidgets
 from mycat import main, tray
 
 
+def test_tray_imports_autostart_as_package():
+    """tray.py must not have a bare 'import autostart' fallback — dead code."""
+    import ast
+    import inspect
+    from mycat import tray as tray_mod
+    src = inspect.getsource(tray_mod)
+    tree = ast.parse(src)
+    bare_imports = [
+        node for node in ast.walk(tree)
+        if isinstance(node, ast.Import)
+        and any(alias.name == "autostart" for alias in node.names)
+    ]
+    assert not bare_imports, "tray.py has bare 'import autostart' — dead code, remove it"
+
+
 def test_tray_exports():
     assert tray.__all__ == ["make_app_icon", "setup_tray"]
     assert main.make_app_icon is tray.make_app_icon
