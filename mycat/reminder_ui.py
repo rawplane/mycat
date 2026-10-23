@@ -33,16 +33,16 @@ Reminder = reminder_mod.Reminder
 def has_no_x11_compositor() -> bool:
     """True when running on X11 with no compositor (transparency would be a black box).
 
-    Reuses the detector in main.py. On such sessions FlybyWindow must clip its
-    window to the drawn silhouette instead of a bounding rectangle, otherwise the
-    plane sits in a black box. Returns False if the detector is unavailable.
+    On such sessions FlybyWindow must clip its window to the drawn silhouette
+    instead of a bounding rectangle, otherwise the plane sits in a black box.
+    Returns False if the detector is unavailable.
     """
     detect = None
     try:
-        from .main import x11_compositor_active as detect
+        from .display import x11_compositor_active as detect
     except Exception:
         try:
-            from mycat.main import x11_compositor_active as detect
+            from mycat.display import x11_compositor_active as detect
         except Exception:
             return False
     try:

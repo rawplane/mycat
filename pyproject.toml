@@ -33,6 +33,7 @@ dev = [
 secure = ["keyring>=24"]
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 testpaths = ["tests"]
 
 # Console script `mycat` → calls mycat.main:main

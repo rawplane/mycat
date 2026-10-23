@@ -10,12 +10,9 @@ pip install PySide6
 """
 
 import argparse
-import configparser
 import logging
 import os
-import shutil
 import signal
-import subprocess
 import sys
 import warnings
 import zipfile
@@ -23,8 +20,20 @@ from pathlib import Path
 
 # Allow running both as `python -m mycat` and `python mycat/main.py`
 if __package__:
-    from . import autostart, llm, reminder, secret_store, skin_catalog
-    from .app_config import CFG_DIR, CFG_FILE
+    from . import autostart, display, llm, reminder, secret_store, skin_catalog
+    from .app_config import (
+        CFG_DIR,
+        CFG_FILE,
+        DEFAULT_POSITION_OFFSET_X,
+        DEFAULT_POSITION_OFFSET_Y,
+        load_config,
+        load_image_from_ini,
+        load_wait_time_from_ini,
+        read_config,
+        save_config,
+        save_image_to_ini,
+        secure_write_config,
+    )
     from .cat_image import (
         get_gif_duration,
         load_packaged_images,
@@ -32,6 +41,14 @@ if __package__:
         parse_gif_frame_delays,
         scale_pixmap_if_needed,
     )
+    from .display import (
+        ensure_virtual_monitor,
+        randr_monitor_count,
+        usable_screen_rect,
+        x11_compositor_active,
+        x11_screen_size,
+    )
+    from .tray import make_app_icon, setup_tray
 else:
     import importlib
     repo_root = Path(__file__).resolve().parent.parent
@@ -45,12 +62,30 @@ else:
     app_config = importlib.import_module("mycat.app_config")
     CFG_DIR = app_config.CFG_DIR
     CFG_FILE = app_config.CFG_FILE
+    DEFAULT_POSITION_OFFSET_X = app_config.DEFAULT_POSITION_OFFSET_X
+    DEFAULT_POSITION_OFFSET_Y = app_config.DEFAULT_POSITION_OFFSET_Y
+    load_config = app_config.load_config
+    load_image_from_ini = app_config.load_image_from_ini
+    load_wait_time_from_ini = app_config.load_wait_time_from_ini
+    read_config = app_config.read_config
+    save_config = app_config.save_config
+    save_image_to_ini = app_config.save_image_to_ini
+    secure_write_config = app_config.secure_write_config
     cat_image = importlib.import_module("mycat.cat_image")
     get_gif_duration = cat_image.get_gif_duration
     load_packaged_images = cat_image.load_packaged_images
     movie_from_gif_bytes = cat_image.movie_from_gif_bytes
     parse_gif_frame_delays = cat_image.parse_gif_frame_delays
     scale_pixmap_if_needed = cat_image.scale_pixmap_if_needed
+    display = importlib.import_module("mycat.display")
+    ensure_virtual_monitor = display.ensure_virtual_monitor
+    randr_monitor_count = display.randr_monitor_count
+    usable_screen_rect = display.usable_screen_rect
+    x11_compositor_active = display.x11_compositor_active
+    x11_screen_size = display.x11_screen_size
+    tray = importlib.import_module("mycat.tray")
+    make_app_icon = tray.make_app_icon
+    setup_tray = tray.setup_tray
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
@@ -80,136 +115,12 @@ IMAGE_HEIGHT_MAX = 500  # Maximum height for images in pixels (images will be sc
 STATIC_TIME = 5.0  # Seconds to show static first frame before playing GIF
 
 # Window position settings
-DEFAULT_POSITION_OFFSET_X = 10  # Offset from right edge of screen
-DEFAULT_POSITION_OFFSET_Y = 10  # Offset from bottom edge of screen
+# (DEFAULT_POSITION_OFFSET_X and DEFAULT_POSITION_OFFSET_Y imported from app_config)
 
 
 def scan_images_directory() -> list[str]:
     """Return sorted unique skin ids from bundled + user-installed locations."""
     return skin_catalog.scan_all()
-
-
-def load_config(screen_width: int, screen_height: int, window_width: int, window_height: int) -> dict:
-    """Load configuration from INI file. Returns position for bottom-right corner."""
-    # Calculate default position (bottom-right with offset)
-    default_x = screen_width - window_width - DEFAULT_POSITION_OFFSET_X
-    default_y = screen_height - window_height - DEFAULT_POSITION_OFFSET_Y
-    config_data = {'x': default_x, 'y': default_y}
-    
-    if not CFG_FILE.exists():
-        return config_data
-    
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        
-        if 'window' in config:
-            if 'x' in config['window']:
-                config_data['x'] = int(config['window']['x'])
-            if 'y' in config['window']:
-                config_data['y'] = int(config['window']['y'])
-    except Exception as e:
-        logger.error(f"Config load error: {e}")
-    
-    return config_data
-
-
-def save_config(config: dict) -> None:
-    """Save configuration to INI file."""
-    try:
-        CFG_DIR.mkdir(parents=True, exist_ok=True)
-        
-        # Read existing config if it exists
-        file_config = configparser.ConfigParser()
-        if CFG_FILE.exists():
-            file_config.read(CFG_FILE)
-        
-        # Ensure [window] section exists
-        if 'window' not in file_config:
-            file_config.add_section('window')
-        
-        # Update window position if provided
-        if 'x' in config:
-            file_config['window']['x'] = str(config['x'])
-        if 'y' in config:
-            file_config['window']['y'] = str(config['y'])
-        
-        # Write to file
-        with open(CFG_FILE, 'w') as f:
-            file_config.write(f)
-        secret_store.secure_file(CFG_FILE)
-    except Exception as e:
-        logger.error(f"Config save error: {e}")
-
-
-def load_image_from_ini() -> str | None:
-    """Load default image setting from INI file."""
-    if not CFG_FILE.exists():
-        logger.info("INI config not found, using default: cat")
-        return None
-    
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        
-        if 'settings' in config and 'default_image' in config['settings']:
-            image_name = config['settings']['default_image']
-            logger.info(f"Loaded image from INI: {image_name}")
-            return image_name
-        else:
-            logger.info("INI config exists but no default_image setting found, using default: cat")
-            return None
-    except Exception as e:
-        logger.error(f"Error reading INI file: {e}, using default: cat")
-        return None
-
-
-def load_wait_time_from_ini(default_wait: float) -> float:
-    """Load wait_time setting from INI file."""
-    if not CFG_FILE.exists():
-        return default_wait
-    try:
-        config = configparser.ConfigParser()
-        config.read(CFG_FILE)
-        if 'settings' in config and 'wait_time' in config['settings']:
-            return float(config['settings']['wait_time'])
-    except Exception as e:
-        logger.error(f"Error reading wait_time from INI: {e}")
-    return default_wait
-
-
-def save_image_to_ini(image_name: str) -> None:
-    """Save current image setting to INI file (skips writing if value is unchanged)."""
-    try:
-        CFG_DIR.mkdir(parents=True, exist_ok=True)
-
-        config = configparser.ConfigParser()
-
-        # Read existing config if it exists
-        if CFG_FILE.exists():
-            config.read(CFG_FILE)
-
-        if (
-            config.has_section('settings')
-            and config.get('settings', 'default_image', fallback=None) == image_name
-        ):
-            return
-
-        # Ensure [settings] section exists
-        if 'settings' not in config:
-            config.add_section('settings')
-
-        # Set the default_image value
-        config['settings']['default_image'] = image_name
-
-        # Write to file
-        with open(CFG_FILE, 'w') as f:
-            config.write(f)
-        secret_store.secure_file(CFG_FILE)
-
-        logger.info(f"Saved image setting to INI: {image_name}")
-    except Exception as e:
-        logger.error(f"Error saving to INI file: {e}")
 
 
 class PixelCatWindow(QtWidgets.QWidget):
@@ -804,216 +715,6 @@ def parse_args() -> argparse.Namespace:
     llm.add_arguments(parser)
     return parser.parse_args()
 
-def x11_compositor_active() -> bool | None:
-    """Return True/False when an X11 compositing manager is running, None if undetermined.
-
-    Every EWMH-compliant compositor (picom, xfwm4, mutter, kwin, ...) owns the
-    `_NET_WM_CM_Sn` selection while active. We query that owner via libX11 so the
-    check works on any X11 desktop, not just XFCE. Returns None on non-X11
-    platforms or when libX11 / the display is unavailable.
-    """
-    if sys.platform.startswith("win") or sys.platform == "darwin":
-        return None
-    if not os.environ.get("DISPLAY"):
-        return None
-    try:
-        import ctypes
-
-        x11 = ctypes.CDLL("libX11.so.6")
-    except OSError:
-        return None
-
-    x11.XOpenDisplay.restype = ctypes.c_void_p
-    x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
-    x11.XDefaultScreen.restype = ctypes.c_int
-    x11.XDefaultScreen.argtypes = [ctypes.c_void_p]
-    x11.XInternAtom.restype = ctypes.c_ulong
-    x11.XInternAtom.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int]
-    x11.XGetSelectionOwner.restype = ctypes.c_ulong
-    x11.XGetSelectionOwner.argtypes = [ctypes.c_void_p, ctypes.c_ulong]
-    x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
-
-    display = x11.XOpenDisplay(None)
-    if not display:
-        return None
-    try:
-        screen = x11.XDefaultScreen(display)
-        atom = x11.XInternAtom(display, f"_NET_WM_CM_S{screen}".encode(), False)
-        return x11.XGetSelectionOwner(display, atom) != 0
-    finally:
-        x11.XCloseDisplay(display)
-
-
-def x11_screen_size() -> tuple | None:
-    """Root window size straight from the X server, for when Qt reports a 0x0 screen.
-
-    Some X setups (nested or remote servers without RANDR) leave QScreen geometry
-    empty even though the display has a real size. libX11's XDisplayWidth/Height
-    still return the true dimensions. Returns None off X11 or when unavailable.
-    """
-    if sys.platform.startswith("win") or sys.platform == "darwin":
-        return None
-    if not os.environ.get("DISPLAY"):
-        return None
-    try:
-        import ctypes
-
-        x11 = ctypes.CDLL("libX11.so.6")
-    except OSError:
-        return None
-
-    x11.XOpenDisplay.restype = ctypes.c_void_p
-    x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
-    x11.XDefaultScreen.restype = ctypes.c_int
-    x11.XDefaultScreen.argtypes = [ctypes.c_void_p]
-    x11.XDisplayWidth.restype = ctypes.c_int
-    x11.XDisplayWidth.argtypes = [ctypes.c_void_p, ctypes.c_int]
-    x11.XDisplayHeight.restype = ctypes.c_int
-    x11.XDisplayHeight.argtypes = [ctypes.c_void_p, ctypes.c_int]
-    x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
-
-    display = x11.XOpenDisplay(None)
-    if not display:
-        return None
-    try:
-        screen = x11.XDefaultScreen(display)
-        width = x11.XDisplayWidth(display, screen)
-        height = x11.XDisplayHeight(display, screen)
-        if width > 0 and height > 0:
-            return width, height
-        return None
-    finally:
-        x11.XCloseDisplay(display)
-
-
-def usable_screen_rect() -> "QtCore.QRect":
-    """Best-effort usable screen rectangle, robust to Qt reporting a 0x0 screen.
-
-    Prefers Qt's panel-aware availableGeometry, then full geometry, then the X
-    server's root size (XDisplayWidth/Height). Returns an empty rect only when
-    nothing is determinable.
-    """
-    screen = QtWidgets.QApplication.primaryScreen()
-    if screen is not None:
-        for rect in (screen.availableGeometry(), screen.geometry()):
-            if rect.width() > 0 and rect.height() > 0:
-                return rect
-    size = x11_screen_size()
-    if size is not None:
-        return QtCore.QRect(0, 0, size[0], size[1])
-    return QtCore.QRect(0, 0, 0, 0)
-
-
-def randr_monitor_count() -> int | None:
-    """Number of active RANDR monitors via `xrandr --listmonitors`, or None if unknown."""
-    xrandr = shutil.which("xrandr")
-    if not xrandr:
-        return None
-    try:
-        result = subprocess.run(
-            [xrandr, "--listmonitors"], capture_output=True, text=True, timeout=5
-        )
-    except (OSError, subprocess.SubprocessError):
-        return None
-    for line in result.stdout.splitlines():
-        head, sep, rest = line.partition("Monitors:")
-        if sep:
-            try:
-                return int(rest.strip())
-            except ValueError:
-                return None
-    return None
-
-
-def ensure_virtual_monitor() -> None:
-    """Register a virtual RANDR monitor when a headless/VNC X server exposes none.
-
-    Such servers have a real framebuffer but zero active RANDR monitors, so Qt
-    reports a 0x0 screen and window positioning plus menu/dialog popups break.
-    Adding a monitor spanning the framebuffer makes Qt see the real screen size.
-    Must run before the QApplication is created. No-op when a monitor already
-    exists, on non-X11 platforms, or when xrandr is unavailable.
-    """
-    if sys.platform.startswith("win") or sys.platform == "darwin":
-        return
-    if not os.environ.get("DISPLAY") or os.environ.get("QT_QPA_PLATFORM") == "offscreen":
-        return
-    count = randr_monitor_count()
-    if count is None or count > 0:
-        return
-    size = x11_screen_size()
-    if size is None:
-        return
-    width, height = size
-    mm_width = round(width / 96 * 25.4)
-    mm_height = round(height / 96 * 25.4)
-    geometry = f"{width}/{mm_width}x{height}/{mm_height}+0+0"
-    xrandr = shutil.which("xrandr")
-    if not xrandr:
-        return
-    try:
-        subprocess.run(
-            [xrandr, "--setmonitor", "mycat-virtual", geometry, "none"],
-            capture_output=True, text=True, timeout=5,
-        )
-    except (OSError, subprocess.SubprocessError):
-        return
-    logger.info("No active RANDR monitor — registered virtual monitor %s so Qt sees the screen.", geometry)
-
-
-def make_app_icon() -> QtGui.QIcon:
-    """A 😽 cat icon, used for the tray, the app icon and the splash."""
-    pixmap = QtGui.QPixmap(64, 64)
-    pixmap.fill(QtCore.Qt.GlobalColor.transparent)
-    painter = QtGui.QPainter(pixmap)
-    painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing, True)
-    font = QtGui.QFont()
-    font.setPointSize(40)
-    painter.setFont(font)
-    painter.drawText(pixmap.rect(), QtCore.Qt.AlignmentFlag.AlignCenter, "😽")
-    painter.end()
-    return QtGui.QIcon(pixmap)
-
-
-def setup_tray(app, window, icon_pixmap):
-    """A persistent cat icon in the system tray with a quick-action menu.
-
-    Returns the tray icon (kept alive by the caller), or None when no system
-    tray is available.
-    """
-    if not QtWidgets.QSystemTrayIcon.isSystemTrayAvailable():
-        return None
-    icon = QtGui.QIcon(icon_pixmap) if icon_pixmap and not icon_pixmap.isNull() else make_app_icon()
-    tray = QtWidgets.QSystemTrayIcon(icon, app)
-    tray.setToolTip("mycat 🐱")
-
-    menu = QtWidgets.QMenu(window)
-    toggle_chat = getattr(window, "_toggle_llm_chat", None)
-    if callable(toggle_chat):
-        menu.addAction("Chat", toggle_chat)
-    menu.addAction("Reminder…", window._open_reminder)
-    menu.addAction("LLM…", window.open_llm_settings)
-    if autostart.is_supported():
-        menu.addSeparator()
-        login_action = menu.addAction("Autostart")
-        login_action.setCheckable(True)
-        login_action.setChecked(autostart.is_enabled())
-        login_action.toggled.connect(autostart.set_enabled)
-    menu.addSeparator()
-    menu.addAction("Settings…", window._open_settings)
-    menu.addAction("Reset Position", window._reset_position)
-    menu.addAction("Quit", QtWidgets.QApplication.quit)
-    tray.setContextMenu(menu)
-
-    def on_activated(reason):
-        if reason == QtWidgets.QSystemTrayIcon.ActivationReason.DoubleClick:
-            window.show()
-            window.raise_()
-
-    tray.activated.connect(on_activated)
-    tray.show()
-    return tray
-
 
 def main() -> None:
     """Main entry point."""
@@ -1114,11 +815,7 @@ def main() -> None:
         # Persistent cat tray icon (kept on the window so it isn't GC'd).
         window.tray_icon = setup_tray(app, window, png_pixmap)
 
-    try:
-        sys.exit(app.exec())
-    except KeyboardInterrupt:
-        logger.info("\nShutdown requested by user")
-        sys.exit(0)
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

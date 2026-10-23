@@ -49,9 +49,25 @@ def test_available_planes_lists_bundled_sprites():
     assert reminder_ui.plane_sprite_path("nope").name == "plane.png"
 
 
+def test_has_no_x11_compositor_uses_display_not_main():
+    """has_no_x11_compositor must not import x11_compositor_active from main."""
+    import inspect
+    from mycat import reminder_ui
+    src = inspect.getsource(reminder_ui.has_no_x11_compositor)
+    assert "from .main import" not in src, (
+        "has_no_x11_compositor imports from main.py — use display instead"
+    )
+    assert "from mycat.main import" not in src, (
+        "has_no_x11_compositor imports from main.py — use display instead"
+    )
+
+
 def test_single_config_source():
     import mycat.app_config as c
-    import mycat.main as m, mycat.reminder as r, mycat.llm_prompt as p
+    import mycat.llm_prompt as p
+    import mycat.main as m
+    import mycat.reminder as r
+
     assert str(m.CFG_FILE) == str(c.CFG_FILE)
     assert str(r.CFG_FILE) == str(c.CFG_FILE)
     assert str(p.CFG_FILE) == str(c.CFG_FILE)

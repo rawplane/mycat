@@ -8,6 +8,21 @@ def use_tmp_config(monkeypatch, tmp_path):
     monkeypatch.setattr(llm_vendors, "CFG_FILE", tmp_path / "config.ini")
 
 
+def test_llm_vendors_import_order_clean():
+    """llm_vendors.py must have sorted imports (ruff I001)."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    src = Path(sys.modules["mycat.llm_vendors"].__file__)
+    result = subprocess.run(
+        [sys.executable, "-m", "ruff", "check", "--select=I", str(src)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, f"ruff I001 in llm_vendors.py:\n{result.stdout}"
+
+
 def test_builtin_presets_present():
     vendors = llm_vendors.builtin_vendors()
     for name in ("ollama", "openai", "grok", "groq", "deepseek", "openrouter"):
